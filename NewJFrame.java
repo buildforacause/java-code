@@ -108,9 +108,19 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jButton2.setText("Clear All");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jButton3.setText("Update");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -216,6 +226,50 @@ public class NewJFrame extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+            
+        // TODO add your handling code here:
+        studentID.setText("");
+        name.setText("");
+        mobileNo.setText("");
+        branch.setSelectedItem("Select");
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String myStudentID = studentID.getText();
+        String myName = name.getText();
+        long myPhone=0;
+        try{
+         myPhone = Long.parseLong(mobileNo.getText());
+        }
+        catch(Exception e){
+            System.out.println("Phone number cannot be blank");
+            return;
+        }
+        String myBranch = (String) branch.getSelectedItem();
+        if(myBranch.equalsIgnoreCase("Select")){
+            JOptionPane.showMessageDialog(null, "Please select the branch");
+            return;
+        }
+        PreparedStatement ps;
+        try{
+        ps = con.prepareStatement("update student set name=? ,phone=?,branch=? where student_id=?");
+ 
+        ps.setString(1, myName);
+        ps.setLong(2, myPhone);
+        ps.setString(3, myBranch);
+        ps.setString(4, myStudentID);
+        ps.execute();
+        JOptionPane.showMessageDialog(null, "Record updated successfully");
+        }
+        catch(Exception e){
+            System.out.println("Something went wrong");
+            return;
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
